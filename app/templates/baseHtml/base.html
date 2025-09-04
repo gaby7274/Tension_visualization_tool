@@ -1,0 +1,54 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/liveVisualizationTool.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/static/pico-1.5.11/pico-1.5.11/css/pico.min.css"> -->
+    <!-- <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="/static/css/pure-css/pure.css">
+
+    <!-- polyfill -->
+    {% block head %}
+
+    {% endblock %}
+
+    {% block MIDI_js %}
+
+	<script src="/static/MIDI.js/inc/shim/Base64.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/inc/shim/Base64binary.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+	<!-- midi.js /static/MIDI.jsckage -->
+	<script src="/static/MIDI.js/js/midi/audioDetect.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/js/midi/gm.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/js/midi/loader.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/js/midi/plugin.audiotag.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/js/midi/plugin.webaudio.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/js/midi/plugin.webmidi.js" type="text/javascript"></script>
+	<!-- utils -->
+	<script src="/static/MIDI.js/js/util/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="/static/MIDI.js/js/util/dom_request_script.js" type="text/javascript"></script>
+    {% endblock %}
+</head>
+<body  onload="init_first_visualization()"style="background-color: black;">
+
+	{% block nav_bar %}
+
+	{% endblock %}
+
+   
+{% block html_body %}
+
+{% endblock %}
+<script src="/static/js/d3/d3.v5.js"></script>
+
+
+
+<script src="/static/js/jquery/jquery.min.js"></script>
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>

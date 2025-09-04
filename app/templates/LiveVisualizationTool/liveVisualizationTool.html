@@ -1,0 +1,69 @@
+{% extends 'baseHtml/base.html' %}
+
+{% block nav_bar %}
+<div class="pure-menu pure-menu-horizontal">
+    <button class="pure-menu-heading pure-menu-link" onclick="change_visualization('main')">Main Visualization</button>
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item">
+            <button class="pure-menu-link" onclick="change_visualization('stationary')">Stationary Harmony Visualization</button>
+        </li>
+        <li class="pure-menu-item">
+            <a href="#" class="pure-menu-link">Sports</a>
+        </li>
+        <li class="pure-menu-item">
+            <a href="#" class="pure-menu-link">Finance</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block html_body %}
+
+<div class="container" id="container">
+
+  
+</div>
+{% endblock %}
+
+<!-- <div style="display:none">
+<input id="midi_file" type="file" accept=".mid" >
+<button id="submit_midi_for_process"  class="bg-blue-500 hover:bg-blue-700 rounded-full"  >Submit</button>
+
+<hr>
+<p>Amount of Workers</p>
+<select id="amount_of_workers" >
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+
+</select>
+</div> -->
+<!--     
+<script src="/static/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
+
+{% block MIDI_js %}
+{{   super() }}
+{% endblock %}
+{% block scripts %}
+
+<script src="/static/js/LiveVisualization/Data_processors/HarmonicCalculator.js"></script>
+<script src="/static/js/LiveVisualization/Controllers/LiveVizualizationToolController.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/CircleOfFifthsVisualization.js"></script>
+
+<script src="/static/js/LiveVisualization/Visualizers/PianoVisualization.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/NoteGridVisualization.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/HertzBarsVisualization.js"></script>
+<script src="/static/js/LiveVisualization/Data_processors/StationaryTensionFinder.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/StationarySineVisualization.js"></script>
+<script src="/static/src/Controllers/MidiController.js"></script>
+<script src="/static/js/Worker.js"></script>
+<script src="/static/js/LiveVisualization/Controllers/MidiInputsController.js"></script>
+
+{% endblock %}
+
+

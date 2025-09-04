@@ -1,0 +1,97 @@
+
+
+type Genre{
+    id: ID
+    name: String
+    songs: [Song]
+}
+
+type Song{
+    id: ID
+    title: String
+    genre: Genre
+    author: Author
+    midi_filepath: String
+    key: String
+    time_signature: String
+    
+
+}
+
+type Author{
+    id: ID
+    name: String
+    genres: [Genre]
+    songs: [Song]
+  
+}
+type deleteAuthorConf{
+    success: Boolean
+    errors: [String]
+}
+
+
+type  addSongsToGenresConf{
+    success: Boolean
+    errors:[String]
+    genres:[Genre]
+    songs:[Song]
+    
+}
+type  addGenresToAuthorsConf{
+    success: Boolean
+    errors:[String]
+    genres:[Genre]
+
+    authors:[Author]
+}
+
+
+
+type deleteAuthor {
+    success: Boolean
+    errors: [String]
+}
+type deleteSong {
+    success: Boolean
+    errors: [String]
+}
+type deleteGenre {
+    success: Boolean
+    errors: [String]
+}
+
+
+type schema{
+    query: Query,
+    mutation: Mutation
+}
+
+
+type Mutation{
+    createAuthor(name: String, genreIds:[ID]): Author
+    createSong(title: String, genreID: ID, authorID: ID, midi_filepath: String): Song
+    createGenre(name: String): Genre
+
+
+    addSongsToGenres(genreIDs: [ID], songIDs: [ID]): addSongsToGenresConf
+    addGenresToAuthors(authorIDs: [ID], genreIDs:[ID]): addGenresToAuthorsConf
+
+    deleteAuthor(authorID: ID):  deleteAuthor
+    deleteSong(songID: ID): deleteSong
+    deleteGenre(genreID: ID): deleteGenre
+    
+}   
+
+type Query{
+    authors(limit:Int, offset: Int): [Author]
+    
+    author( authorId: ID): Author
+    songs(limit:Int, offset:Int): [Song]
+    song(songID: ID): Song
+    genres(limit:Int, offset:Int):[Genre]
+    genre(genreID: ID): Genre
+
+
+}
+
