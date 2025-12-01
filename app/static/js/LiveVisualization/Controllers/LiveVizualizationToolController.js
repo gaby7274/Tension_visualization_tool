@@ -1,12 +1,13 @@
 
 
-vis_type = 'main'
+vis_type = 'stationary' //default visualization type
 function change_visualization(visualization_type){
 
     vis_type = visualization_type
-    $('#container').empty()
+   $('.containers').remove()
     switch(visualization_type){
         case 'main':
+
             init_first_visualization()
             break
         case 'stationary':
@@ -20,10 +21,12 @@ function change_visualization(visualization_type){
 
 
 function init_first_visualization(){    
-
     
-  
-
+    container_div = $('<div/>',{
+        'id':'container',
+        'class':'hertz_container containers',
+    })
+    container_div.appendTo('body')
 
     div = $('<div/>',{
         'id':'main_viz',
@@ -73,14 +76,11 @@ function init_first_visualization(){
 
 
 function init_stationary_visualization(){
-    div = $('<div/>',{
-    'id':'stationary_bars',
-    'class':'stationary_bars',
-    }
 
-    )
 
-    $('#container').append(div)
+    create_containers_with_inputs()
+
+    
     create_stationary_bar_axis()
 }
 
@@ -188,10 +188,12 @@ function visualization_pipeline(event){
 
         case 'stationary':
 
-            returned_information_from_stationary_tension = manage_stationary_visualization(note_periods_per_note_per_cycle)
-            note_pairs_per_bound = returned_information_from_stationary_tension.note_pairs_per_bound
-            preprocessed_data = returned_information_from_stationary_tension.preprocessed_data
-            visualize_stationary_bars(note_pairs_per_bound,preprocessed_data)
+            // returned_information_from_stationary_tension = manage_stationary_visualization(note_periods_per_note_per_cycle)
+            // note_pairs_per_bound = returned_information_from_stationary_tension.note_pairs_per_bound
+            // preprocessed_data = returned_information_from_stationary_tension.preprocessed_data
+            preprocessed_data = preprocess_data(note_periods_per_note_per_cycle)
+            note_pairs_per_bound = []
+            visualize_stationary_tension(note_pairs_per_bound,preprocessed_data)
         break
     }
    

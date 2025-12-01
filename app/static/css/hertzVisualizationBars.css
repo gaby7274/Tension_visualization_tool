@@ -1,0 +1,32 @@
+
+ div.main_viz{
+    min-width: 50%;
+    float: left;
+    height: 90vh;
+
+}
+
+div.controllers{
+    min-width: 45%;
+    float: right;
+    height: 90vh;
+} 
+.note_grid{
+    height:50vh;
+   
+    padding-bottom: 3%;
+
+}
+.bar_viz{
+    height:20vh;
+}
+.piano_viz{
+    height: 20vh;
+}
+
+
+.row_visuals{
+    margin-right: 2%;
+    
+}
+

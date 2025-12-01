@@ -101,6 +101,18 @@ function preprocess_data(note_periods_per_note_per_cycle){
 
 
 function find_min_max_bounds(note_periods, cycles){
+    /*returns a list of bounds, each bound contains:
+                highest_note_cycle: j+1,
+            bass_note_cycle:i+1,
+            mean: mid_point,
+            bass_note_period: bass_periods[i],
+            highest_note_period: highest_note_periods[j],
+            distance:distance,
+            ratio:ratio,
+            abs_distance: Math.abs(distance)
+
+            */
+
 
 
     // only consider first and last elements each note_period
@@ -239,7 +251,11 @@ function binary_search_with_bounds(start_bound_index, end_bound_index, mean, oth
 
 }
 
+
+//TODO what happens if onlye one note is played?
 function extract_useful_information_from_candidates(bound_information, candidates_in_bound){
+
+    // console.log('extracting from candidates',bound_information, candidates_in_bound)
     
     // Here we mix bound_info and the candidates_per_bound
     //Bound information contains:
@@ -318,6 +334,7 @@ function extract_useful_information_from_candidates(bound_information, candidate
         
     }
 
+    
     object_to_return.notes_data.push({
         cycle:bound_information.highest_note_cycle,
         period:bound_information.highest_note_period,
@@ -366,7 +383,7 @@ function extract_useful_information_from_candidates(bound_information, candidate
 function manage_stationary_visualization(note_periods_per_note_per_cycle){
 
     // preprocess data into array of arrays ordered by midi_number
-    console.log('note_periods_per_note_per_cycle', note_periods_per_note_per_cycle)
+    // console.log('note_periods_per_note_per_cycle', note_periods_per_note_per_cycle)
 
 
 
@@ -374,6 +391,8 @@ function manage_stationary_visualization(note_periods_per_note_per_cycle){
     // console.log('preprocessed data',preprocessed_data)
 
     
+    
+    //WHAT HAPPENS IF ONLY ONE NOTE IS PLAYED?????????
 
     //now that everything is sorted, we can get min, max bounds
 
@@ -443,7 +462,7 @@ function manage_stationary_visualization(note_periods_per_note_per_cycle){
         note_pairs_per_bound:note_pairs_per_bound,
         preprocessed_data:preprocessed_data,
     }
-    visualize_stationary_bars(note_pairs_per_bound.slice(0,top_n_notes),preprocessed_data)
+    visualize_stationary_tension(note_pairs_per_bound.slice(0,top_n_notes),preprocessed_data)
     
 
     

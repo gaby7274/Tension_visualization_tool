@@ -17,7 +17,8 @@ max_harmonics = 7
 
 
 // max periods considered
-max_periods_considered = 20
+//TODO SLIDER
+max_periods_considered = 200
 
 
 round_function_precision =3
@@ -696,6 +697,8 @@ function listen_to_midi(event){
             //Note on, key is note, value is velocity
             notes_playing[event.data[1]] = event.data[2]
             break;
+
+            
         default:
             break;
         
