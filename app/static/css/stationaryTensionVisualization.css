@@ -21,12 +21,80 @@ div.period_controllers{
 }
 div.last_grid { grid-area: 3 / 1 / 6 / 4; }
  */
+
+ /* Stationary contatiner */
 div.stationary_container{
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
+
+/* This is the top part of the div */
+div.display_graphs{
+    width: 100vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Left part of top div */
+div.interharmonic_modulation_visualization{
+    width: 50vw;
+    height: 60vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 5px
+}
+
+
+/* first half of left part top div*/
+div.note_grid_visualization{
+    /* width: 50vw; */
+    /* height: 100vh; */
+    width: 100%;
+    height: 100%;
+}
+
+/* second half of left part top div */
+div.interharmonic_modulation_graph{
+    /* width: 50vw; */
+    width: 100%;
+    /* height: 100vh; */
+    height: 100%;
+}
+
+
+/* Right part of top div */
+div.subharmonic_modulation_visualization{
+    width: 50vw;
+    height: 60vh;
+}
+
+/* This is the bottom part of the div */
+div.controls_container{
+    width: 100vw;
+    height: 40vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.staff_visualization{
+    width: 50vw;
+    height: 40vh;
+}
+
+div.information_for_computation{
+    width: 50vw;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
 div.stationary_bars{
     min-height: 45vh;
 

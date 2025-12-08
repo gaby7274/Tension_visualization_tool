@@ -78,10 +78,30 @@ function init_first_visualization(){
 function init_stationary_visualization(){
 
 
-    create_containers_with_inputs()
+    //Divide screen in four parts
+
+    create_containers_for_stationary_tension()
+
+    create_interharmonic_visualization()
+
+    update_visualization_pipeline_settings()
+
+
+    // create_containers_with_inputs()
 
     
-    create_stationary_bar_axis()
+    // create_stationary_bar_axis()
+}
+
+
+function update_visualization_pipeline_settings(){
+    //get settings from html inputs
+    //update global variables accordingly
+    compute_tension_for_ground_truth_and_specific_parameters()
+
+    key_down_refresh = new CustomEvent('keydown', {key:'Shift'})
+    document.dispatchEvent(key_down_refresh)
+
 }
 
 
@@ -106,7 +126,7 @@ function visualization_pipeline(event){
     // Overtone series in hertz
     harmonics_in_hertz = six_types_of_harmonics.harmonics_in_hertz
 
-    console.log('harmonics_in_hertz: ',harmonics_in_hertz)
+    // console.log('harmonics_in_hertz: ',harmonics_in_hertz)
 
     //note_periods for stationary harmony
     note_periods_per_note_per_cycle = six_types_of_harmonics.note_periods_per_note
@@ -188,6 +208,11 @@ function visualization_pipeline(event){
 
         case 'stationary':
 
+            //first step, do interharmonic tension computation for this notes
+
+            interhamonic_tension_pipeline(harmonics_in_hertz)
+
+
             // returned_information_from_stationary_tension = manage_stationary_visualization(note_periods_per_note_per_cycle)
             // note_pairs_per_bound = returned_information_from_stationary_tension.note_pairs_per_bound
             // preprocessed_data = returned_information_from_stationary_tension.preprocessed_data
@@ -199,6 +224,42 @@ function visualization_pipeline(event){
    
 
     
+
+}
+
+// This function manipulates global variables for interharmonic tension
+// subharmonic tension
+// normalized tension scores
+// and lets see. 
+function main_stationary_tension_pipeline(event, gt=false){
+
+    
+    
+    harmonics_and_periods_cycles_per_notes = listen_to_midi_stationary(event)
+    
+    
+    harmonics_in_hertz = harmonics_and_periods_cycles_per_notes.harmonics_in_hertz
+    note_periods_per_note = harmonics_and_periods_cycles_per_notes.note_periods_per_note
+
+
+    //Now that we have harmonics_ pass through interharmonic tension pipeline
+    interharmonic_tension_pipeline(harmonics_in_hertz)
+
+    //after this we should see what does each array contain
+
+    // console.log(data_to_plot_interharmonic)
+    // console.log(raw_modulations_per_region)
+    // console.log(modulations_with_region_weights)
+    // console.log(final_tension_score_per_note_combination)
+
+    // ok debugging done...............................................
+
+    // ahora. 
+
+
+    // visualize stationary tension, in grid. 
+    visualize_squares_in_stationary_tension_grid(final_tension_score_per_note_combination)
+
 
 }
 

@@ -51,19 +51,43 @@
 {% endblock %}
 {% block scripts %}
 
-<script src="/static/js/LiveVisualization/Data_processors/HarmonicCalculator.js"></script>
-<script src="/static/js/LiveVisualization/Controllers/LiveVizualizationToolController.js"></script>
-<script src="/static/js/LiveVisualization/Visualizers/CircleOfFifthsVisualization.js"></script>
+<!-- Adding all global variables -->
+<script src="/static/js/LiveVisualization/Variables/global_variables.js"></script>
+<script src="/static/js/LiveVisualization/Variables/interharmonic_variables.js"></script>
+<script src="/static/js/LiveVisualization/Data_processors/Stationary_Tension/helper_functions/HarmonicCalculator.js"></script>
 
-<script src="/static/js/LiveVisualization/Visualizers/PianoVisualization.js"></script>
-<script src="/static/js/LiveVisualization/Visualizers/NoteGridVisualization.js"></script>
-<script src="/static/js/LiveVisualization/Visualizers/HertzBarsVisualization.js"></script>
+
+<!-- Adding vanilla visualizer -->
+<script src="/static/js/LiveVisualization/Visualizers/vanilla_visualizer/CircleOfFifthsVisualization.js"></script>
+
+
+<script src="/static/js/LiveVisualization/Visualizers/vanilla_visualizer/NoteGridVisualization.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/vanilla_visualizer/HertzBarsVisualization.js"></script>
+
+<!-- Adding Tension Computation~ers -->
+ <script src="/static/js/LiveVisualization/Data_processors/Stationary_Tension/helper_functions/weights_for_harmonics.js"></script>
+<script src="/static/js/LiveVisualization/Data_processors/Stationary_Tension/interharmonic_modulation_tension.js"></script>
+
+
+<!-- Stationary Tension helpers and visualizers -->
 <script src="/static/js/LiveVisualization/Data_processors/StationaryTensionFinder.js"></script>
-<script src="/static/js/LiveVisualization/Visualizers/StationarySineVisualization.js"></script>
+
+<script src="/static/js/LiveVisualization/Visualizers/stationary_tension/NoteGridVisualization.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/stationary_tension/interharmonic_graphs.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/stationary_tension/StationarySineVisualization.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/stationary_tension/__init__.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/stationary_tension/ground_truth_bars.js"></script>
+
+<!--  -->
+
 <script src="/static/src/MidiController.js"></script>
 <script src="/static/js/Worker.js"></script>
 <script src="/static/js/LiveVisualization/Controllers/MidiInputsController.js"></script>
+<script src="/static/js/LiveVisualization/Visualizers/vanilla_visualizer/PianoVisualization.js"></script>
 
+
+<!-- Adding all OP controllers -->
+ <script src="/static/js/LiveVisualization/Controllers/LiveVizualizationToolController.js"></script>
 {% endblock %}
 
 

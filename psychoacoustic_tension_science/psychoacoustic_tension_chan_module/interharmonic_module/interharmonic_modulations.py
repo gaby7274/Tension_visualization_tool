@@ -341,9 +341,9 @@ def generalized_chan_method_calculation(note_array_to_compute, note_df, distribu
     # print("we are in generalized chan method calculation")
     # print(f"note_array_to_compute: {note_array_to_compute}")
 
-    if distributive:
+    if distributive!=False:
         for note_index in range(0,len(note_array_to_compute)-1):
-            for compared_note in range(1,len(note_array_to_compute)):
+            for compared_note in range(note_index+1,len(note_array_to_compute)):
                 primary_note = note_array_to_compute[note_index]
                 secondary_note = note_array_to_compute[compared_note]
                 
@@ -455,7 +455,26 @@ def normalized_interharmonic_modulations_pipeline(note_combinations_array,
             ## which is computed from the previous list, it is sumof all weighted modulations, divided by the total amount of modulations per permutation
             weighted_modulation_sum_per_region_per_combination_normalized_tension_value=[]
 
-            for modulation_array in array_of_modulations_per_region:
+            ## Two methods for distributive, get ratio of modulations in dissonant/allregions per interval and sum each interval
+            ## vs, sum all modulations and then get ratio of dissonant/allregions
+        
+            if(distributive=="weight_interval_sum"):
+                for modulation_array in array_of_modulations_per_region:
+                    normalized_tension_value, tension_list_weighted, tension_list_for_each_range_in_two_notes, weights_for_each_index_in_tense_array = modified_chan_tension_calculation(note1=note_combination[0],
+                                                                                                                                                                            note2=note_combination[1],
+                                                                                                                                                                            note_df=df,
+                                                                                                                                                                            values_of_r_ranges=values_of_r_ranges,
+                                                                                                                                                                            weights_for_regions=weights_for_regions,
+                                                                                                                                                                            apply_weights_to_individual_harmonic=apply_weights_to_individual_harmonic,
+                                                                                                                                                                            limit_delta_frequency=limit_delta_frequency,
+                                                                                                                                                                            frequency_threshold=frequency_threshold,
+                                                                                                                                                                            include_lower_bound=include_lower_bound,
+                                                                                                                                                                            tension_list_for_each_range_in_two_notes=modulation_array)
+                    weighted_modulation_sum_per_region_per_combination_normalized_tension_value.append( normalized_tension_value if not np.isnan(normalized_tension_value) else 0)
+                    weighted_modulations_per_region_in_note_combinations.append(tension_list_weighted)
+            else:
+                ## instead of weighting each interval, se sum all modulations for each index
+                total_modulations_per_region = [sum(x) for x in zip(*array_of_modulations_per_region)]
                 normalized_tension_value, tension_list_weighted, tension_list_for_each_range_in_two_notes, weights_for_each_index_in_tense_array = modified_chan_tension_calculation(note1=note_combination[0],
                                                                                                                                                                         note2=note_combination[1],
                                                                                                                                                                         note_df=df,
@@ -465,7 +484,7 @@ def normalized_interharmonic_modulations_pipeline(note_combinations_array,
                                                                                                                                                                         limit_delta_frequency=limit_delta_frequency,
                                                                                                                                                                         frequency_threshold=frequency_threshold,
                                                                                                                                                                         include_lower_bound=include_lower_bound,
-                                                                                                                                                                        tension_list_for_each_range_in_two_notes=modulation_array)
+                                                                                                                                                                        tension_list_for_each_range_in_two_notes=total_modulations_per_region)
                 weighted_modulation_sum_per_region_per_combination_normalized_tension_value.append( normalized_tension_value if not np.isnan(normalized_tension_value) else 0)
                 weighted_modulations_per_region_in_note_combinations.append(tension_list_weighted)
 
@@ -596,7 +615,8 @@ def pipeline_for_interharmonic_normalized_tension_scores(note_combinations_array
                                                          chord_labels_array, 
                                                          r_ranges=[[(0.95, 1.1), (1.5, 2.8)]],
                                                          r_range_names=['Chan\'s Vanilla'], 
-                                                         distributive=[True, False],
+                                                         caps=[0],
+                                                         distributive=['weight_interval_sum','all_modulations_weight', False],
                                                          weights_for_regions={
                                                             'red_region': 1,
                                                             'orange_region': 0.7,
@@ -639,7 +659,7 @@ def pipeline_for_interharmonic_normalized_tension_scores(note_combinations_array
 
     # defining caps
     # caps = [0,170,80]
-    caps = [0]
+    # caps = [0]
 
 
     # defining if we want weights for each harmonic
@@ -705,6 +725,7 @@ def pipeline_for_interharmonic_normalized_tension_scores(note_combinations_array
                         df_for_method['weights_on_harmonics'] = False
                         df_for_method['weights_on_regions'] = False
                         df_for_method['weights_for_regions'] = None
+                        df_for_method['cap'] = cap
                         
                         biggest_df = pd.concat([biggest_df, df_for_method], ignore_index=True)
                     
@@ -734,6 +755,7 @@ def pipeline_for_interharmonic_normalized_tension_scores(note_combinations_array
                                 df_for_method['harmonics_considered'] = harmonics
                                 df_for_method['weights_on_harmonics'] = weights_harmonic
                                 df_for_method['weights_on_regions'] = weights_region
+                                df_for_method['cap'] = cap
                                 df_for_method['weights_for_regions'] = str(weights_for_regions) if weights_region is True else None
                                 biggest_df = pd.concat([biggest_df, df_for_method], ignore_index=True)
 

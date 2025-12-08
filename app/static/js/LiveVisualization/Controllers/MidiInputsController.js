@@ -1,8 +1,9 @@
 
+
+let on=false
 document.addEventListener("keydown", function(event) {  
     
 
-    on=false
     if(event.key == 'Enter' && !on){
         on=true
             
@@ -33,14 +34,26 @@ document.addEventListener("keydown", function(event) {
    
          
         if(navigator.requestMIDIAccess){
-            console.log('MIENTES')
+            console.log('Acceso grantiado')
             navigator.requestMIDIAccess().then(midiSuccess, midiFailure)
         }
         return
     }
 
+    if(event.key == 'Shift' && on){
+
+        //reset played notes
+        for(let i=0; i<midi_notes_played.length; i++){
+            MIDI.noteOff(0, midi_notes_played[i], 0)
+        }
+        midi_notes_played = []
+        notes_playing= {}
+    }
+
 
   });
+
+
 
 function midiSuccess(midiAccess){
     console.log(midiAccess)
@@ -62,14 +75,36 @@ function midiSuccess(midiAccess){
     }
 }
 function onMIDIMessage(event){
-    console.log(event)
-    play_midi_event(event)
+    // console.log(event)
+
+    //Manage message events distinctly depending on visualization
+
+    switch(vis_type){
+        case 'stationary':
+            play_stationary_midi_event(event)
+            main_stationary_tension_pipeline(event)
+            break;
+        case 'main':
+            
+            play_midi_event(event)
+            visualization_pipeline(event)
+            break;
+    }
+    // play_midi_event(event)
+
+
+    //
     
-    visualization_pipeline(event)
+    // visualization_pipeline(event)
 }
 
-midi_notes_played = []
+
+// PLayed MIDI NOTES TODO
+//TODO: can keep adding notes until one is off. Or Hit R to record notes maybe. 
+
 function play_midi_event(event){
+
+
 
     if(event.data[0]==144){
         midi_notes_played.push(event.data[1])
@@ -81,7 +116,7 @@ function play_midi_event(event){
 else{
     
     
-    console.log('here????')
+    // console.log('here????')
      MIDI.noteOff(0, event.data[1], 0)
      midi_notes_played.splice(midi_notes_played.indexOf(event.data[1]),1)
     //  MIDI.chordOn(0, midi_notes_played, 127,0)
@@ -90,6 +125,19 @@ else{
 
 
 }
+}
+
+
+function play_stationary_midi_event(event){
+
+    if(event.data[0]==144  ){
+        if(!(event.data[1] in midi_notes_played)){
+            midi_notes_played.push(event.data[1])
+
+        }
+        MIDI.noteOn(0, event.data[1], 127,0)
+    }
+
 }
 function midiStateChange(event){
     console.log(event)
