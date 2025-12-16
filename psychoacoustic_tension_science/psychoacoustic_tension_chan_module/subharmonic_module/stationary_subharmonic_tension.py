@@ -309,7 +309,41 @@ def get_different_observable_df(observable_metrics,
     return top_m_df
 
 
-def equation_21_stationary_tension(delta_t_sub_pairs_df, c=2.6, threshhold_negative_exp=3):
+def equation_21_stationary_tension2(delta_t_sub_pairs_df, c=2.1, threshhold_negative_exp=3):
+    """
+    Implementation of Equation 21 from Chan's paper, where it returns the sum of
+    delta_t^c over t_sub. 
+    The equation looks like this:
+    n * ((1/sum((delta_t_i)^c / t_sub_i))**(1/c))
+
+    threshold_negative_exp is to make sure the denominator part of equation is not too close to zero.    
+
+    where n is the number of elements in the dataframe, delta_t_i is the difference between max and min t_sub
+    """
+
+    n = len(delta_t_sub_pairs_df)
+    sum_t_pairs = 0
+
+    for i,row in delta_t_sub_pairs_df.iterrows():
+        delta_t = row['difference_(delta_t)']
+        t_sub = row['mean_t_sub']
+        delta_hat_t = (delta_t/t_sub)
+        if(delta_hat_t < 10**(-threshhold_negative_exp)):
+            sum_t_pairs += 0
+        else:
+            sum_t_pairs += (delta_t**c)/t_sub
+    # print(sum_t_pairs)
+    # if(sum_t_pairs < 10**(-threshhold_negative_exp)):
+    #     return 0
+
+    if(sum_t_pairs ==0):
+        return 0
+    tension = n * ((1/sum_t_pairs)**(1/c))
+    return tension
+
+
+
+def equation_21_stationary_tension(delta_t_sub_pairs_df, c=2.1, threshhold_negative_exp=3):
     """
     Implementation of Equation 21 from Chan's paper, where it returns the sum of
     delta_t^c over t_sub. 
@@ -390,56 +424,56 @@ def generate_subharmonic_tension_for_each_possible_case(note_names, periods_cons
     # first  case 1: Smallest_delta_t and filter by smallest t_sub Method A
     case_1 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='difference_(delta_t)', filter_top_3_by='mean_t_sub')
     case_1['case'] = 'Smallest_delta_t_and_filter_by_smallest_t_sub_(Chan\'s_method?)'
-    case_1['tension_score']= (equation_21_stationary_tension(case_1,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_1['tension_score']= (equation_21_stationary_tension2(case_1,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_1], ignore_index=True)
 
     # Case 2 Method B
     case_2 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='difference_(delta_t)', filter_top_3_by='difference_(delta_t)')
     case_2['case'] = 'Smallest_delta_t_and_choose_top_3_delta_t'
-    case_2['tension_score']= (equation_21_stationary_tension(case_2,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_2['tension_score']= (equation_21_stationary_tension2(case_2,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_2], ignore_index=True)
 
     # case 3 Method C
     case_3 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='difference_(delta_t)', filter_top_3_by='difference_ratio_(delta_t_hat)')
     case_3['case'] = 'Smallest_delta_t_and_filter_by_smallest_ratio'
-    case_3['tension_score']= (equation_21_stationary_tension(case_3,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_3['tension_score']= (equation_21_stationary_tension2(case_3,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_3], ignore_index=True)
 
     # Case 4 Method D
 
     case_4 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='mean_t_sub', filter_top_3_by='mean_t_sub')
     case_4['case'] = 'Smallest_t_sub_and_choose_top_3_t_sub'
-    case_4['tension_score']= (equation_21_stationary_tension(case_4,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_4['tension_score']= (equation_21_stationary_tension2(case_4,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_4], ignore_index=True)
 
     # Case 5 Method E
     case_5 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='mean_t_sub', filter_top_3_by='difference_(delta_t)')
     case_5['case'] = 'Smallest_t_sub_and_filter_by_smallest_delta_t'
-    case_5['tension_score']= (equation_21_stationary_tension(case_5,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_5['tension_score']= (equation_21_stationary_tension2(case_5,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_5], ignore_index=True)
 
     # Case 6 Method F
     case_6 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='mean_t_sub', filter_top_3_by='difference_ratio_(delta_t_hat)')
     case_6['case'] = 'Smallest_t_sub_and_filter_by_smallest_ratio'
-    case_6['tension_score']= (equation_21_stationary_tension(case_6,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_6['tension_score']= (equation_21_stationary_tension2(case_6,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_6], ignore_index=True)
 
     # Case 7 Method G
     case_7 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='difference_ratio_(delta_t_hat)', filter_top_3_by='mean_t_sub')
     case_7['case'] = 'Smallest_ratio_and_filter_by_smallest_t_sub'
-    case_7['tension_score']= (equation_21_stationary_tension(case_7,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_7['tension_score']= (equation_21_stationary_tension2(case_7,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_7], ignore_index=True)
 
     # Case 8 Method H
     case_8 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='difference_ratio_(delta_t_hat)', filter_top_3_by='difference_(delta_t)')
     case_8['case'] = 'Smallest_ratio_and_filter_by_smallest_delta_t'
-    case_8['tension_score']= (equation_21_stationary_tension(case_8,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_8['tension_score']= (equation_21_stationary_tension2(case_8,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_8], ignore_index=True)
 
     # Case 9 Method I
     case_9 = get_different_observable_df(observable_metrics_df, top_n=top_n, top_m=top_m, sort_by='difference_ratio_(delta_t_hat)', filter_top_3_by='difference_ratio_(delta_t_hat)')
     case_9['case'] = 'Smallest_ratio_and_choose_top_3_ratio'
-    case_9['tension_score']= (equation_21_stationary_tension(case_9,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
+    case_9['tension_score']= (equation_21_stationary_tension2(case_9,c=2.1,threshhold_negative_exp=threshold_neg_exp_for_equation_21))**2
     big_df = pd.concat([big_df, case_9], ignore_index=True)
 
     # # #then case 1: Smallest_t_sub and choose top 3 delta_t

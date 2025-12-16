@@ -1,7 +1,7 @@
 // TODO slider to set harmonics
 
 let max_harmonics = 14
-let ihm_cap=170
+let ihm_cap=null
 let max_periods_considered = 20
 
 
